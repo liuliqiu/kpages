@@ -21,11 +21,11 @@ def get_ui_modules():
     ms =  get_members(__conf__.ACTION_DIR,member_filter=m_filter)
     if 'tornado.web.UIModule' in ms:
         del ms['tornado.web.UIModule']
-    
+
     newms = {}
     for key,val in ms.items():
         newms[key.replace('.','_')] = val
-    
+
     return newms
 
 def get_ui_methods():
@@ -38,7 +38,7 @@ def get_ui_methods():
 
     for key,val in ms.items():
         newms[key.replace('.','_')] = val
-    
+
     return newms
 
 class WebApp(object):
@@ -51,11 +51,11 @@ class WebApp(object):
     def __init__(self, port=None, handlers=None, callback=None):
         self._port = port or __conf__.PORT
         self._callback = callback
-        self._handlers = load_handlers(__conf__.ACTION_DIR)
+        self._handlers = handlers or load_handlers(__conf__.ACTION_DIR)
         self._modules = get_ui_modules()
         self._methods = get_ui_methods()
         self._webapp = self._get_webapp()
-    
+
 
     def _get_webapp(self):
         settings = {"debug": __conf__.DEBUG,

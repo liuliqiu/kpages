@@ -69,6 +69,7 @@ class TestPersistentDB(tornado.testing.AsyncHTTPTestCase):
         __conf__.PERSISTENT_DB_CONNECTION = True
         __conf__.DB_HOST = 'localhost'
         __conf__.DB_NAME = 'kpages_test'
+        __conf__.SOCK_TIMEOUT = 1000
 
         self._dbconn = pymongo.MongoClient(__conf__.DB_HOST)
         self._db = self._dbconn[__conf__.DB_NAME]
@@ -85,7 +86,7 @@ class TestPersistentDB(tornado.testing.AsyncHTTPTestCase):
         self._kwebapp = WebApp(
             handlers=_sorted_hanlders(
                 [SyncInitHandler, SyncSecondHandler, AsyncInitHandler, AsyncSecondHandler]))
-        return self._kwebapp._webapp
+        return self._kwebapp.webapp
 
     def test_sync_client(self):
         self.http_client.fetch(self.get_url("/sync/init/"), self.stop)
